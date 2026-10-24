@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+body { 
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+}
+
+/* Card Accent Colors */
+.card-lost-bg { 
+  background-color: #f3effa !important; 
+}
+
+.card-found-bg { 
+  background-color: #e8f5e9 !important; 
+}
+
+.how-it-works-bg { 
+  background-color: #e8f5ed !important; 
+}

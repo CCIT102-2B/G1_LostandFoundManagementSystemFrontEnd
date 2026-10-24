@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAITH FindIt - Lost & Found Board</title>
+  <!-- Tailwind CSS & FontAwesome CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header / Navigation -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div style="background-color: #1a334e;" class="w-8 h-8 rounded-xl text-white flex items-center justify-center text-xs">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <span class="font-extrabold text-lg text-slate-900 tracking-tight">FAITH <span style="color: #2da179;">FindIt</span></span>
+      </div>
+      
+      <nav class="flex items-center gap-8">
+        <a href="#board" class="text-sm font-bold text-slate-800 hover:text-slate-900 transition">Browse items</a>
+        <a href="#how-it-works" class="text-sm font-medium text-slate-500 hover:text-slate-900 transition">How it works</a>
+        <button id="btn-report-nav" style="background-color: #2563eb;" class="hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+          <span>+</span> Report an item
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section style="background-color: #162d46;" class="py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <!-- Concentric Ring Ornament Background -->
+    <div style="border-color: rgba(255, 255, 255, 0.04);" class="absolute -right-24 -top-16 w-[520px] h-[520px] border-[50px] rounded-full pointer-events-none"></div>
+    <div style="border-color: rgba(255, 255, 255, 0.03);" class="absolute -right-10 -top-4 w-[380px] h-[380px] border-[30px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+      
+      <!-- Left Column -->
+      <div class="lg:col-span-7 space-y-4">
+        <p style="color: #728aa1;" class="text-[11px] font-bold tracking-widest uppercase">FAITH COLLEGES · SCHOOL USE ONLY</p>
+        <h1 style="color: #ffffff;" class="text-4xl sm:text-[46px] font-extrabold tracking-tight leading-[1.12]">
+          Lost something?<br />
+          <span style="color: #93e2c3;">Let's find it together.</span>
+        </h1>
+        <p style="color: #d1dcde;" class="text-xs sm:text-sm max-w-lg leading-relaxed">
+          A school-only lost and found board for the FAITH Colleges community. Browse reports or share an item lost or found on campus.
+        </p>
+        <div class="flex flex-wrap gap-3 pt-3">
+          <button id="btn-hero-lost" style="background-color: #a4ebd0; color: #111827;" class="hover:opacity-90 font-bold px-5 py-2.5 rounded-lg text-xs transition">
+            I lost something
+          </button>
+          <button id="btn-hero-found" style="background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff;" class="hover:bg-white/10 font-bold px-5 py-2.5 rounded-lg text-xs transition">
+            I found something
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column Card -->
+      <div style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12);" class="lg:col-span-5 p-6 rounded-2xl shadow-lg space-y-3 max-w-md ml-auto">
+        <div class="text-2xl">🤝</div>
+        <h3 style="color: #ffffff;" class="font-bold text-sm">For the FAITH Colleges community.</h3>
+        <p style="color: #b0c3d4;" class="text-[12px] leading-relaxed">
+          Use this school project platform to report belongings lost or found on campus. Please do not post sensitive personal information.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Main Board Area -->
+  <main id="board" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full space-y-8">
+    
+    <!-- Title & Action -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900">FAITH Colleges item board</h2>
+        <p class="text-sm text-slate-500 mt-0.5">Browse lost and found reports from the FAITH Colleges campus.</p>
+      </div>
+      <button id="btn-create-report" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition self-start sm:self-auto shadow-sm">
+        + Create a report
+      </button>
+    </div>
+
+    <!-- Stats Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-lg">🔍</div>
+        <div>
+          <div id="stat-total" class="text-2xl font-extrabold text-slate-900">0</div>
+          <div class="text-xs text-slate-500 font-medium">Total reports</div>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-lg">🧭</div>
+        <div>
+          <div id="stat-looking" class="text-2xl font-extrabold text-slate-900">0</div>
+          <div class="text-xs text-slate-500 font-medium">Still looking</div>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-lg">💚</div>
+        <div>
+          <div id="stat-returned" class="text-2xl font-extrabold text-slate-900">0</div>
+          <div class="text-xs text-slate-500 font-medium">Returned</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="space-y-4">
+      <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-2">
+        <div class="relative flex-grow">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+          <input id="search-input" type="text" placeholder="Search item name, details, or location..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 focus:bg-white rounded-lg outline-none border border-transparent focus:border-blue-500 transition" />
+        </div>
+        <div class="flex gap-2">
+          <select id="category-filter" class="bg-slate-50 focus:bg-white border border-transparent focus:border-blue-500 text-xs font-semibold px-3 py-2 rounded-lg outline-none cursor-pointer">
+            <option value="all">All categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Personal items">Personal items</option>
+            <option value="School supplies">School supplies</option>
+            <option value="Accessories">Accessories</option>
+          </select>
+          <select id="sort-filter" class="bg-slate-50 focus:bg-white border border-transparent focus:border-blue-500 text-xs font-semibold px-3 py-2 rounded-lg outline-none cursor-pointer">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Filter Pills -->
+      <div id="filter-pills" class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+        <button data-filter="all" id="pill-all" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-900 text-white">All reports</button>
+        <button data-filter="lost" id="pill-lost" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">Lost items</button>
+        <button data-filter="found" id="pill-found" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">Found items</button>
+        <button data-filter="returned" id="pill-returned" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">Returned</button>
+      </div>
+    </div>
+
+    <!-- Items Grid -->
+    <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <!-- How It Works Container -->
+    <section id="how-it-works" class="how-it-works-bg p-6 sm:p-8 rounded-2xl border border-teal-100 space-y-6">
+      <div>
+        <h3 class="text-xl font-bold text-slate-900">How FAITH FindIt works</h3>
+        <p class="text-xs text-slate-600 mt-1">For school use only · Three simple steps to help belongings find their way home.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-teal-100 shadow-sm space-y-2">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">STEP 01</span>
+          <h4 class="font-bold text-slate-900 text-sm">Report it</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Share the item name, a few details, and where it was last seen or found.</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-teal-100 shadow-sm space-y-2">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">STEP 02</span>
+          <h4 class="font-bold text-slate-900 text-sm">Search the board</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">Browse reports or use search and filters to find a possible match.</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-teal-100 shadow-sm space-y-2">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">STEP 03</span>
+          <h4 class="font-bold text-slate-900 text-sm">Update the status</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">When the item is reunited with its owner, mark the report as returned.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 space-y-1">
+    <p class="font-medium text-slate-700">FAITH Colleges Lost & Found · For school use only · Student project prototype</p>
+    <p>Demo reports are sample data. Confirm ownership with authorized school personnel before returning any item.</p>
+  </footer>
+
+  <!-- Modal Container -->
+  <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-5 max-h-[92vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="font-extrabold text-xl text-[#1e293b]">Report an item</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Add the details below so others can help identify the item.</p>
+        </div>
+        <button id="btn-close-modal" type="button" class="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-slate-700 flex items-center justify-center text-sm font-bold">✕</button>
+      </div>
+
+      <!-- Form Fields Grid -->
+      <form id="report-form" class="space-y-4">
+        
+        <!-- Row 1: Item name & Report type -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1.5">Item name *</label>
+            <input id="form-title" type="text" placeholder="e.g. Black wallet" required class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white transition" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1.5">Report type *</label>
+            <select id="form-type" class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white font-medium transition cursor-pointer">
+              <option value="Lost item">Lost item</option>
+              <option value="Found item">Found item</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2: Category & Date lost/found -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1.5">Category *</label>
+            <select id="form-category" class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white font-medium transition cursor-pointer">
+              <option value="Electronics">Electronics</option>
+              <option value="Personal items">Personal items</option>
+              <option value="School supplies">School supplies</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1.5">Date lost/found *</label>
+            <input id="form-date" type="date" required class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white transition" />
+          </div>
+        </div>
+
+        <!-- Row 3: Location -->
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1.5">Location *</label>
+          <input id="form-location" type="text" placeholder="e.g. Library, second floor" required class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white transition" />
+        </div>
+
+        <!-- Row 4: Description -->
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1.5">Description *</label>
+          <textarea id="form-description" rows="3" placeholder="Color, brand, distinguishing details..." required class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white transition"></textarea>
+        </div>
+
+        <!-- Row 5: Required Full Name & Required Email Address -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1.5">Your full name *</label>
+            <input id="form-name" type="text" placeholder="e.g. Juan Dela Cruz" required class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white transition" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-800 mb-1.5">Email address *</label>
+            <input id="form-email" type="email" placeholder="e.g. student@firstasia.edu.ph" required class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white transition" />
+          </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="pt-3 flex items-center justify-end gap-3">
+          <button type="button" id="btn-cancel-modal" class="px-5 py-2.5 text-xs font-bold border border-slate-200 rounded-xl text-slate-700 hover:bg-slate-50 transition">Cancel</button>
+          <button type="submit" class="px-6 py-2.5 text-xs font-bold bg-[#2563eb] hover:bg-blue-700 text-white rounded-xl shadow-sm transition">Submit report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
