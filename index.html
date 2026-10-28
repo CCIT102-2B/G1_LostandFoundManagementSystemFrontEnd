@@ -8,9 +8,26 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+  <!-- Student login gate (prototype only; use backend authentication for production) -->
+  <section id="login-screen" class="login-screen">
+    <form id="login-form" class="login-card">
+      <div class="login-mark"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <p class="login-kicker">FAITH COLLEGES · STUDENT ACCESS</p>
+      <h1>Welcome to FindIt</h1>
+      <p class="login-description">Sign in with your school email to see how many items are missing on campus and to report an item.</p>
+      <label for="login-email">School email</label>
+      <input id="login-email" type="email" placeholder="student@firstasia.edu.ph" required />
+      <label for="login-password">Password</label>
+      <input id="login-password" type="password" placeholder="Enter any password for prototype" required minlength="4" />
+      <p id="login-error" class="login-error" role="alert"></p>
+      <button type="submit" class="login-submit">Sign in</button>
+      <p class="login-note">Prototype sign-in only. Connect real authentication before publishing.</p>
+    </form>
+  </section>
+
 
   <!-- Header / Navigation -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
@@ -28,6 +45,8 @@
         <button id="btn-report-nav" style="background-color: #2563eb;" class="hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition flex items-center gap-1.5 shadow-sm">
           <span>+</span> Report an item
         </button>
+        <span id="signed-in-user" class="signed-in-user"></span>
+        <button id="btn-logout" class="logout-button" type="button">Log out</button>
       </nav>
     </div>
   </header>
@@ -48,7 +67,7 @@
           <span style="color: #93e2c3;">Let's find it together.</span>
         </h1>
         <p style="color: #d1dcde;" class="text-xs sm:text-sm max-w-lg leading-relaxed">
-          A school-only lost and found board for the FAITH Colleges community. Browse reports or share an item lost or found on campus.
+          A school-only lost and found board for the FAITH Colleges community. See what is missing on campus or share an item lost or found.
         </p>
         <div class="flex flex-wrap gap-3 pt-3">
           <button id="btn-hero-lost" style="background-color: #a4ebd0; color: #111827;" class="hover:opacity-90 font-bold px-5 py-2.5 rounded-lg text-xs transition">
@@ -79,71 +98,24 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <h2 class="text-2xl font-bold text-slate-900">FAITH Colleges item board</h2>
-        <p class="text-sm text-slate-500 mt-0.5">Browse lost and found reports from the FAITH Colleges campus.</p>
+        <p class="text-sm text-slate-500 mt-0.5">See which items are currently missing on the FAITH Colleges campus.</p>
       </div>
       <button id="btn-create-report" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition self-start sm:self-auto shadow-sm">
         + Create a report
       </button>
     </div>
 
-    <!-- Stats Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-lg">🔍</div>
+    <!-- Missing items overview (students see ONLY item name + quantity, as donut charts) -->
+    <section id="missing-overview" class="missing-overview">
+      <div class="missing-heading">
         <div>
-          <div id="stat-total" class="text-2xl font-extrabold text-slate-900">0</div>
-          <div class="text-xs text-slate-500 font-medium">Total reports</div>
+          <h3>Missing items overview</h3>
+          <p>Only the item name and quantity are shown. Item details are private to school staff.</p>
         </div>
+        <span id="missing-total" class="missing-total font-bold">0 missing</span>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-lg">🧭</div>
-        <div>
-          <div id="stat-looking" class="text-2xl font-extrabold text-slate-900">0</div>
-          <div class="text-xs text-slate-500 font-medium">Still looking</div>
-        </div>
-      </div>
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-lg">💚</div>
-        <div>
-          <div id="stat-returned" class="text-2xl font-extrabold text-slate-900">0</div>
-          <div class="text-xs text-slate-500 font-medium">Returned</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Search & Filter Controls -->
-    <div class="space-y-4">
-      <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-2">
-        <div class="relative flex-grow">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
-          <input id="search-input" type="text" placeholder="Search item name, details, or location..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 focus:bg-white rounded-lg outline-none border border-transparent focus:border-blue-500 transition" />
-        </div>
-        <div class="flex gap-2">
-          <select id="category-filter" class="bg-slate-50 focus:bg-white border border-transparent focus:border-blue-500 text-xs font-semibold px-3 py-2 rounded-lg outline-none cursor-pointer">
-            <option value="all">All categories</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Personal items">Personal items</option>
-            <option value="School supplies">School supplies</option>
-            <option value="Accessories">Accessories</option>
-          </select>
-          <select id="sort-filter" class="bg-slate-50 focus:bg-white border border-transparent focus:border-blue-500 text-xs font-semibold px-3 py-2 rounded-lg outline-none cursor-pointer">
-            <option value="newest">Newest first</option>
-            <option value="oldest">Oldest first</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Quick Filter Pills -->
-      <div id="filter-pills" class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-        <button data-filter="all" id="pill-all" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-900 text-white">All reports</button>
-        <button data-filter="lost" id="pill-lost" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">Lost items</button>
-        <button data-filter="found" id="pill-found" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">Found items</button>
-        <button data-filter="returned" id="pill-returned" class="pill-btn font-semibold px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200">Returned</button>
-      </div>
-    </div>
-
-    <!-- Items Grid -->
-    <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="missing-charts" class="missing-charts"></div>
+    </section>
 
     <!-- How It Works Container -->
     <section id="how-it-works" class="how-it-works-bg p-6 sm:p-8 rounded-2xl border border-teal-100 space-y-6">
@@ -159,8 +131,8 @@
         </div>
         <div class="bg-white p-5 rounded-xl border border-teal-100 shadow-sm space-y-2">
           <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">STEP 02</span>
-          <h4 class="font-bold text-slate-900 text-sm">Search the board</h4>
-          <p class="text-xs text-slate-500 leading-relaxed">Browse reports or use search and filters to find a possible match.</p>
+          <h4 class="font-bold text-slate-900 text-sm">Check the charts</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">See which items are missing and how many. Contact school staff if one is yours.</p>
         </div>
         <div class="bg-white p-5 rounded-xl border border-teal-100 shadow-sm space-y-2">
           <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">STEP 03</span>
@@ -230,6 +202,9 @@
           <label class="block text-xs font-bold text-slate-800 mb-1.5">Location *</label>
           <input id="form-location" type="text" placeholder="e.g. Library, second floor" required class="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 focus:bg-white transition" />
         </div>
+
+        <!-- Quantity -->
+        
 
         <!-- Row 4: Description -->
         <div>
