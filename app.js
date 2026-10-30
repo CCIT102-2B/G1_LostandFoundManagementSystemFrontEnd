@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
         type: document.getElementById('form-type').value.toUpperCase(),
         status: 'Open',
         title: document.getElementById('form-title').value.trim(),
-        quantity: Math.max(1, parseInt(document.getElementById('form-quantity').value, 10) || 1),
         description: document.getElementById('form-description').value,
         location: document.getElementById('form-location').value,
         date: formattedDate,
@@ -221,3 +220,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (savedEmail) showSignedIn(savedEmail);
   renderMissingCharts();
 });
+
+
